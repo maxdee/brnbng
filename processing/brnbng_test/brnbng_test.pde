@@ -3,46 +3,54 @@ import processing.serial.*;
 Serial comport;
 
 
-//globals
+//globals eyes - no bigger than 16512
 int on0 = 500;
 int off0 = 500;
 int on1 = 500;
 int off1 = 500;
 
-int[] serda = new int [9];
+//wlaking globals
+boolean walking = false;
+
+//relative position
+float posX = 0.5;
+float posY = 0.5;
+float heading = 0;
+
+
+//objects
+int[] objX = new int[100000];
+int[] objY = new int[100000];
+int[] objS = new int[100000];
+
+//circleNum keeps track of the number of circles
+int objNum = 0;
+
+
+
+
+
+
+
 
 void setup() {
-  size(500,500);
+  size(400, 400);//screenWidth, screenHeight);
+  background(0);
   println(Serial.list());
   comport = new Serial(this, Serial.list()[0], 9600);
+  frameRate(60);
 }
-
-
 
 void draw() { 
-
   serialsend();
-  delay(10);
-  on0 = mouseX*10;
-  off0 = mouseY*10;
-  on1 = mouseX*10;
-  off1 = mouseY*10;
+  mouseHeading();
+  posmap(posX, posY, heading);
+  objects();
+  sight(false);
+  sight(true);
 }
 
-void serialsend() {
-  
-  serda[0] = 255;
-  serda[1] = on0/128;
-  serda[2] = on0%128;
-  serda[3] = off0/128;
-  serda[4] = off0%128;
-  serda[5] = on1/128;
-  serda[6] = on1%128;
-  serda[7] = off1/128;
-  serda[8] = off1%128;
-  int by = 0;
-  for(by = 0; by < 9; by++) {
-    comport.write(serda[by]);
-  }
-}
+
+
+
 

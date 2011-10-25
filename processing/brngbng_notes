@@ -1,0 +1,36 @@
+
+
+== Light Object ==
+- size
+- place
+- brightness
+- frequency
+- patern
+- colour
+
+
+== input method class ==
+returns heading and position
+
+== walking class == 
+handles the boundary checks
+
+== sight ==
+generates the pulse values
+
+
+scraps
+//////////////////////////////////////////////////////////
+
+//(posX - eyeposX)*(objY[cn]-eyeposY) -(posY-eyeposY)*(objX[cn]-eyeposX) == 1){
+    
+    //eyeposX < eyeposX+cos(radians(heading*360))*eyesep && objX[cn] > eyeposX 
+   // ||
+    //eyeposX > eyeposX+cos(radians(heading*360))*eyesep && objX[cn] > eyeposX
+    //){
+    
+
+
+    //float hyp = sqrt(sq(objX[cn]-eyeposX)+sq(objY[cn]-eyeposY));
+    //float tet = 0;
+   // heading-atan((objX[cn]-eyeposX)/(objY[cn]-eyeposY))
