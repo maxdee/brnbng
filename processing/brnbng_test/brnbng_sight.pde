@@ -26,34 +26,41 @@
 
 
 
-void sight(boolean eye) {
+void sight() {
   //object check in direction of heading.
   float eyesep = 0.05;
-  float eyeposX;
-  float eyeposY;
+  strokeWeight(3);
 
-  if (eye) {
-    eyeposX = posX + cos(radians((heading*360)+90))*eyesep;
-    eyeposY = posY + sin(radians((heading*360)+90))*eyesep;
-    point(eyeposX*width, eyeposY*height);
-  } 
-  else {
-    eyeposX = posX + cos(radians((heading*360)-90))*eyesep;
-    eyeposY = posY + sin(radians((heading*360)-90))*eyesep;
-    point(eyeposX*width, eyeposY*height);
-  }
- //the big vision loop
+
+  float eyeposLX = posX + cos(radians((heading*360)-90))*eyesep;
+  float eyeposLY = posY + sin(radians((heading*360)-90))*eyesep;
+  point(eyeposLX*width, eyeposLY*height);
+
+  float eyeposRX = posX + cos(radians((heading*360)+90))*eyesep;
+  float eyeposRY = posY + sin(radians((heading*360)+90))*eyesep;
+  point(eyeposRX*width, eyeposRY*height);
+
+
+  //the big vision loop
   for (int cn = 0; cn <= objNum; cn++) {
-   
-    println((posX - eyeposX)*(objY[cn]-eyeposY) -(posY-eyeposY)*(objX[cn]-eyeposX));
+    float obX = objX[cn]-posX;//eyeposLX;
+    float obY = objY[cn]-posY;//eyeposLY;
+    float x = (obX*cos(-radians((heading*360)-90)))-(obY*sin(-radians((heading*360)-90))); 
+    float y = (obX*sin(-radians((heading*360)-90)))+(obY*cos(-radians((heading*360)-90)));
 
-    
-    
-    
-    line(eyeposX*width,eyeposY*height,objX[cn],objY[cn]);
-    //println(tet);
-    //}
+
+
+    if (y > 0) {
+      on0 = 0;
+      strokeWeight(1);
+      ellipse(((x+1)/2)*width, y*height, 10, 10);
+      line(eyeposLX*width, eyeposLY*height, objX[cn]*width, objY[cn]*height);
+      line(eyeposRX*width, eyeposRY*height, objX[cn]*width, objY[cn]*height);
+    }
   }
 }
-//if eye flase/true to assign blinking to eyes.
+
+
+
+
 

@@ -19,9 +19,9 @@ float heading = 0;
 
 
 //objects
-int[] objX = new int[100000];
-int[] objY = new int[100000];
-int[] objS = new int[100000];
+float[] objX = new float[100];
+float[] objY = new float[100];
+float[] objS = new float[100];
 
 //circleNum keeps track of the number of circles
 int objNum = 0;
@@ -34,11 +34,15 @@ int objNum = 0;
 
 
 void setup() {
-  size(400, 400);//screenWidth, screenHeight);
+  size(500,500);//screenWidth, screenHeight);
   background(0);
   println(Serial.list());
   comport = new Serial(this, Serial.list()[0], 9600);
   frameRate(60);
+  
+  objX[0] = 0.2;
+  objY[0] = 0.3;
+  objS[0] = 50;
 }
 
 void draw() { 
@@ -46,8 +50,8 @@ void draw() {
   mouseHeading();
   posmap(posX, posY, heading);
   objects();
-  sight(false);
-  sight(true);
+  sight();
+
 }
 
 

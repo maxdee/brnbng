@@ -4,6 +4,7 @@ void posmap(float px, float py, float heading) {
   background(0);
   int lnlenght = 20;
   stroke(205);
+  strokeWeight(1);
   line(50, 20, 10, 20);
   line(int(px*width), int(py*height), int(px*width)+ int((cos(radians(heading*360)))*lnlenght), int(py*height+(sin(radians(heading*360)))*lnlenght));
 }
@@ -20,12 +21,8 @@ void posmap(float px, float py, float heading) {
 
 void mouseHeading() {  
   //using pmouseXY
-  heading += 1.5*(float(mouseX-pmouseX)/width);
-
-
-  //  heading = ((float(mouseN-mouseO)/float(width))/3+heading);  
-
-  //println(10*(float(mouseX-pmouseX)/width));
+  heading = (2*(float(mouseX)/width))%1;
+ // println(heading);
 }
 
 
