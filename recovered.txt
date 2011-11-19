@@ -1,0 +1,270 @@
+import processing.core.*; 
+import processing.xml.*; 
+
+import procontroll.*; 
+import net.java.games.input.*; 
+
+import java.applet.*; 
+import java.awt.Dimension; 
+import java.awt.Frame; 
+import java.awt.event.MouseEvent; 
+import java.awt.event.KeyEvent; 
+import java.awt.event.FocusEvent; 
+import java.awt.Image; 
+import java.io.*; 
+import java.net.*; 
+import java.text.*; 
+import java.util.*; 
+import java.util.zip.*; 
+import java.util.regex.*; 
+
+public class brnbng_dev extends PApplet {
+
+//----------------------JOYPADS----------------------//
+
+
+
+//JOYPADS---------logitech dual action X 2
+ControllIO[] ctlio = new ControllIO[2];
+ControllDevice[] joypad = new ControllDevice[2];
+ControllStick[] stickL = new ControllStick[2];
+ControllStick[] stickR = new ControllStick[2];
+//ControllButton[] button = new ControllButton[13];
+
+//other instances
+Gui ui;
+Persona[] prsn = new Persona[2];
+
+Objects[] bjct = new Objects[100];
+int oCnt = 0;
+
+//-----------------------------------------------------//
+public void setup() {
+  size(400, 400);
+
+  //-------------------------init
+  ui = new Gui();
+  //---------------persons
+  int p1 = color(0,100,0);
+  int p2 = color(100,0,0);
+  prsn[0] = new Persona(0.5f, 0.4f,p1, 0);
+  prsn[1] =  new Persona(0.5f, 0.6f,p2, 1);
+
+  //---------------objects
+  for (int i = 0; i < bjct.length; i++) {
+    bjct[i] = new Objects();
+  }
+
+  //---------------joypads
+  for (int i = 0; i < prsn.length; i++) {
+    ctlio[i] = ControllIO.getInstance(this);
+    joypad[i] = ctlio[i].getDevice(i);
+    stickL[i] = joypad[i].getStick(0);
+    stickR[i] = joypad[i].getStick(1);
+    stickL[i].setTolerance(0.09f);
+    stickR[i].setTolerance(0.09f);
+    //set the moving speed
+    stickL[i].setMultiplier(0.004f);
+    //sets the heading incrementer
+    stickR[i].setMultiplier(0.02f);
+  }
+
+  //  for (int b = 0; b < 13; b++) {
+  //    joypad[0].plug(this, "input[0].hb", ctlio[0].ON_PRESS, b);
+  //    joypad[1].plug(this, "input[1].hb", ctlio[1].ON_PRESS, b);
+  //    //rethink the button deal
+  //    button[b] = joypad[0].getButton(b);
+  //    button[b] = joypad[1].getButton(b);
+  //  }
+}
+
+public void draw() {
+   ui.refresh();
+  for (int i = 0; i < prsn.length; i++) {
+    prsn[i].mover();
+    prsn[i].see();
+  }
+ 
+}
+
+
+public void mousePressed() {  
+  bjct[oCnt].place(PApplet.parseFloat(mouseX)/width, PApplet.parseFloat(mouseY)/height, true);
+  oCnt++;
+  oCnt = oCnt%bjct.length;
+}
+//in joypad pointers point to input functions....
+
+//Gui class, anything that is drawn
+
+
+class Gui {
+  /*PROPERTIES*/
+  //width and height are already available
+
+  /*METHODS*/
+
+  //CONSTRUCT
+  public Gui() {
+  }
+
+  public void refresh() {
+    //draw all the things!
+    background(100);
+    person(0);
+    person(1);
+    obj();
+  } 
+  //can I use strings in object names?
+  private void person(int p) {
+    fill(prsn[p].col);
+    ellipse(prsn[p].posX*width, prsn[p].posY*height, 10, 10);
+    int lnlength = 10;
+    line(prsn[p].posX*width, prsn[p].posY*height, 
+    prsn[p].posX*width+ (cos(radians(prsn[p].heading*360)))*lnlength, 
+    prsn[p].posY*width+ (sin(radians(prsn[p].heading*360)))*lnlength);
+  }
+
+  private void obj() {
+    for (int i = 0; i < bjct.length; i++) {
+      if (bjct[i].tgl) {
+        fill(255);
+        ellipse(bjct[i].posX*width, bjct[i].posY*height, 20, 20);
+      }
+    }
+  }
+}
+
+//creat objects in environement
+
+class Objects {
+
+  //subclasses for walls and points...
+
+  //-----------------------------PROPERTIES--------------------------
+  //points
+  //walls=
+  boolean tgl;
+  float posX;
+  float posY;
+
+  //-----------------------------METHODS--------------------------
+  //construct
+  public Objects() {
+    tgl = false;
+    float posX = 0;
+    float posY = 0;
+  }
+
+
+
+  public void place(float x, float y, boolean t) {
+    tgl = t;
+    posX = x;
+    posY = y;
+  }
+}
+
+//Persona class is the virtual itiration of the participant
+
+class Persona {
+
+  /*PROPERTIES*/
+  //width and height are already available
+  //Two vectors?
+  PVector location;
+  PVector direction;
+
+  float posX;
+  float posY;
+  float heading;
+ 
+  int col;
+  //control properties
+  int joy;
+
+  //sight settings
+  float view;
+  float eyesep = 0.05f;
+  //naturality.
+  float wobble = 0.005f;
+  //player
+  int plr;
+
+
+
+
+  /*METHODS*/
+
+  //construct twith starting position
+  public Persona(float x, float y, int c, int j) {
+    col = c;
+    joy = j;
+    posX = x;
+    posY = y;
+}
+
+  //  public pos(float x, float y, float h){
+  //    //return position and heading
+  //  }
+
+  public void mover() {
+    heading += stickR[joy].getY();
+    heading = heading%1;
+    if (true) {//boundary()) {
+      //forward/backwards
+      posX -= cos(radians(heading*360))*stickL[joy].getX();
+      posY -= sin(radians(heading*360))*stickL[joy].getX();
+      //sides
+      posX += cos(radians((heading*360)+90))*stickL[joy].getY()/2;
+      posY += sin(radians((heading*360)+90))*stickL[joy].getY()/2;
+      //induce wobble
+    }
+    //wrap around, single player exploration mode?
+    posX = posX%1;
+    posY = posY%1; 
+    if (posX < 0) {
+      posX = 1;
+    }
+    if (posY < 0) {
+      posY = 1;
+    }
+  }
+
+  //----------------------------SIGHT!!---------------------------------------
+  public void see() {
+    float eyeposLX = posX + cos(radians((heading*360)-90))*eyesep;
+    float eyeposLY = posY + sin(radians((heading*360)-90))*eyesep;
+    //point(eyeposLX*width, eyeposLY*height);
+
+    float eyeposRX = posX + cos(radians((heading*360)+90))*eyesep;
+    float eyeposRY = posY + sin(radians((heading*360)+90))*eyesep;
+    //point(eyeposRX*width, eyeposRY*height);
+
+    //the big vision loop 
+    for (int i = 0; i < bjct.length; i++) {
+      //translation
+      if (bjct[i].tgl) {
+        float obX = bjct[i].posX-posX;//eyeposLX;
+        float obY = bjct[i].posY-posY;//eyeposLY;
+        //relational position of objects!!
+        float x = (obX*cos(-radians((heading*360)-90)))-(obY*sin(-radians((heading*360)-90))); 
+        float y = (obX*sin(-radians((heading*360)-90)))+(obY*cos(-radians((heading*360)-90)));
+        //in field of vision  
+        if (y > 0) {
+          //seeen
+          strokeWeight(1);
+          fill(col);
+          ellipse(((x+1)/2)*width, y*height, 10, 10);
+          line(posX*width, posY*height, bjct[i].posX*width, bjct[i].posX*height);
+        }
+      }
+    }
+    //see the other player
+  }
+}
+
+  static public void main(String args[]) {
+    PApplet.main(new String[] { "--present", "--bgcolor=#666666", "--stop-color=#cccccc", "brnbng_dev" });
+  }
+}
