@@ -11,8 +11,8 @@ class Led {
   //assigned channel for the led.
   int chan;
 
-  int on;
-  int off;
+  int on = 1000;
+  int off = 1000;
   //averaging of points...
   float onAv;
   float offAv;
@@ -27,18 +27,19 @@ class Led {
   int onB;
   int offB;
 
-
   //-----------------------------METHODS--------------------------
   public Led(int c) {
     chan = c;
   }
 
   public void display() {
-    on = PApplet.parseInt((onAv/noo)*1000);
-    off = PApplet.parseInt((offAv/noo)*1000);
+    on = PApplet.parseInt(onAv/noo);
+    off = PApplet.parseInt(offAv/noo);      
+    println(on+"    "+off);
+    noo=0;
   }
   
-  
+  //add points. to sight.
   public void saw(int o, float x, float y) {
     float dada = x+y;
     //    acumulate

@@ -3,11 +3,7 @@
 class Persona {
 
   /*PROPERTIES*/
-  //width and height are already available
-  //Two vectors?
-  PVector location;
-  PVector direction;
-
+  //positionning
   float posX;
   float posY;
   float heading;
@@ -19,21 +15,24 @@ class Persona {
   float eyeposY;
   float xx;
   float yy;
-
+  
+  //color
   int col;
   //control properties and self awarness
   int joy;
-
+  //leds
   int leye;
   int reye;
 
   //sight settings
-  float view;
+  //periferal vision
+  float view = 0.01;
   float eyesep = 0.05f;
-  //naturality.
-  float wobble = 0.005f;
   //focal
   float zoom = 0.1;
+  //naturality.
+  float wobble = 0.005f;
+  
   /*METHODS*/
 
   //construct twith starting position
@@ -46,7 +45,7 @@ class Persona {
     reye = r;
   }
   
-  //Update function!
+  //------------------------Update function!---------------------------------
   public void update() {
     mover();
     see();
@@ -54,7 +53,7 @@ class Persona {
 
   //----------------------------MOVE!!---------------------------------------
 
-  public void mover() {
+  private void mover() {
     heading += stickR[joy].getY();
     heading = heading%1;
     if (true) {//boundary()) {
@@ -79,7 +78,7 @@ class Persona {
 
   //----------------------------SIGHT!!---------------------------------------
 
-  public void see() {
+  private void see() {
     //the big vision loop  still very messy
     for (int i = 0; i < bjct.length; i++) {
       //if object is enabled
@@ -87,12 +86,14 @@ class Persona {
         //translation
         obX = bjct[i].posX-posX;
         obY = bjct[i].posY-posY;
+        
         //relational position of objects!!
         xx = (obX*cos(-radians((heading*360)-90)))-(obY*sin(-radians((heading*360)-90))); 
         yy = (obX*sin(-radians((heading*360)-90)))+(obY*cos(-radians((heading*360)-90)));
         //send to sound
         patch.send(joy, i, xx, yy);
 
+        //do the eyes     
         for (int e = 0; e < 2; e++) {
           if (e==0) {
             eyeposX = posX + cos(radians((heading*360)-90))*eyesep;
@@ -110,19 +111,22 @@ class Persona {
           xx = (obX*cos(-radians((heading*360)-90)))-(obY*sin(-radians((heading*360)-90))); 
 
           //with focal ONLY FOR EYESIGHT
-          xx = (xx*zoom)/yy;
+          
 
-          //in field of vision  
-          if (yy > 0) {
-            //seeen
+          //in field of vision  // are you a fish?
+          if (yy > view) {
+            //y is my z and theres no y.
+            xx = (xx*zoom)/yy;
+            
             //update led data - seen object# @ coordinates
-            //send to the right led...
+            //e is the eye!
             if (e==0) {
               bduino.led[leye].saw(i, xx, yy);
             }
             else {
               bduino.led[reye].saw(i, xx, yy);
             }
+            //draw some stuff
             strokeWeight(1);
             fill(col);
             stroke(col);

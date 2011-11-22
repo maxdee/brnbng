@@ -14,6 +14,7 @@ ControllStick[] stickL = new ControllStick[2];
 ControllStick[] stickR = new ControllStick[2];
 
 //--------SERIAL--------\\
+//arduino led binking
 Serial comport;
 Duino bduino;
 
@@ -24,7 +25,7 @@ PD patch;
 //--------CLASSES--------\\
 Gui ui;
 Persona[] prsn = new Persona[2];
-Objects[] bjct = new Objects[100];
+Objects[] bjct = new Objects[10];
 
 //--------VARIABLES--------\\
 //Object count
@@ -32,7 +33,7 @@ int oCnt = 0;
 
 
 public void setup() {
-  size(300, 300);
+  size(500, 500);
   ui = new Gui();
   setupSerial();
   setupOSC();
@@ -43,9 +44,10 @@ public void setup() {
 
 public void draw() {
   ui.refresh();
-  for (int i = 0; i < prsn.length; i++) {
-    prsn[i].update();
-  }
+//  for (int i = 0; i < prsn.length; i++) {
+//    prsn[i].update();
+//  }
+  prsn[0].update();
   bduino.send();
 }
 
@@ -86,6 +88,7 @@ public void setupObjects() {
 public void setupPersonas() {
   int p1 = color(0, 100, 0);
   int p2 = color(100, 0, 0);
+  //x y color joystick lefteye righteye
   prsn[0] = new Persona(0.5f, 0.4f, p1, 0, 0, 1);
   prsn[1] =  new Persona(0.5f, 0.6f, p2, 1, 2, 3);
 }

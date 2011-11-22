@@ -6,7 +6,7 @@ class Duino {
 
 
   //-----------------------------METHODS--------------------------
-
+  //construct
   public Duino() {
     for (int i = 0; i < led.length; i++) {
       led[i] = new Led(i);
@@ -19,14 +19,14 @@ class Duino {
   //rgb mode colour * eye * on/offs
 
   public void send() {  
-        for (int i = 0; i < led.length; i++) {
+    //update data
+    for (int i = 0; i < led.length; i++) {
       led[i].display();
     }
-    
-    
+
     int[] serda = new int [9];
-    //254 and 255
-    serda[0] = 255;    
+    //254 and 255 to choose player
+    serda[0] = 254;    
     serda[1] = led[0].on/128;
     serda[2] = led[0].on%128;
     serda[3] = led[0].off/128;
