@@ -13,11 +13,13 @@ class Led {
 
   int on = 1000;
   int off = 1000;
-  //averaging of points...
-  float onAv;
-  float offAv;
-  //number of objects
+  
+  float ntnst;
+  float freq;
   int noo;
+  //number of objects
+  float average;
+  float weight;
 
   //for rgb mode
   int onR;
@@ -32,20 +34,23 @@ class Led {
     chan = c;
   }
 
-  public void display() {
-    on = PApplet.parseInt(onAv/noo);
-    off = PApplet.parseInt(offAv/noo);      
-    println(on+"    "+off);
-    noo=0;
+  public void display() {    
+    //weighted average!
+    freq = average/weight;
+    ntnst = weight/noo;
+    on = int(ntnst*(freq*16514f));
+    off = int(((ntnst*-1)+1)*(freq*16514));
+    //println(freq+"    "+ntnst);
+    average = 0;
+    weight = 0;
+    noo = 0;
   }
   
   //add points. to sight.
-  public void saw(int o, float x, float y) {
-    float dada = x+y;
-    //    acumulate
-    //    ona
-    onAv += dada;
-    offAv += dada;
+  public void saw(int o, float nt) {
+    ntnst = nt;
+    average += ntnst*bjct[o].freq;
+    weight += ntnst;    
     noo++;
     //    divide by noo after.
   }

@@ -47,8 +47,10 @@ public void draw() {
 //  for (int i = 0; i < prsn.length; i++) {
 //    prsn[i].update();
 //  }
+  //one at a time
   prsn[0].update();
   bduino.send();
+  
 }
 
 //Place objects!

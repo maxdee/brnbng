@@ -26,13 +26,15 @@ class Persona {
 
   //sight settings
   //periferal vision
-  float view = 0.01;
+  float view = 0;
+  //face size
   float eyesep = 0.05f;
   //focal
   float zoom = 0.1;
   //naturality.
   float wobble = 0.005f;
-  
+  //visibility
+  float visi = 0.2;
   /*METHODS*/
 
   //construct twith starting position
@@ -110,21 +112,22 @@ class Persona {
           yy = (obX*sin(-radians((heading*360)-90)))+(obY*cos(-radians((heading*360)-90)));
           xx = (obX*cos(-radians((heading*360)-90)))-(obY*sin(-radians((heading*360)-90))); 
 
-          //with focal ONLY FOR EYESIGHT
           
-
           //in field of vision  // are you a fish?
           if (yy > view) {
+            //with focal ONLY FOR EYESIGHT
             //y is my z and theres no y.
-            xx = (xx*zoom)/yy;
+           // xx = (xx*zoom)/yy;
             
+            //get the intencity            
+            float ntnst = ((sqrt(sq(xx)+sq(yy)))*visi);
+            println(ntnst);
             //update led data - seen object# @ coordinates
-            //e is the eye!
-            if (e==0) {
-              bduino.led[leye].saw(i, xx, yy);
+            if (e==0) { //e is the eye!
+              bduino.led[leye].saw(i, ntnst);
             }
             else {
-              bduino.led[reye].saw(i, xx, yy);
+              bduino.led[reye].saw(i, ntnst);
             }
             //draw some stuff
             strokeWeight(1);

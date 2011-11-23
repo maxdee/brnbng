@@ -11,6 +11,8 @@ class Objects {
   float posX;
   float posY;
   
+  float freq = 0.01;
+  
   //color data soon
   //-----------------------------METHODS--------------------------
   //construct
