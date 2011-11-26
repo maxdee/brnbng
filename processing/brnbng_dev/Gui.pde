@@ -35,7 +35,7 @@ class Gui {
       if (bjct[i].tgl) {
         stroke(0);
         fill(255);
-        ellipse(bjct[i].posX*width, bjct[i].posY*height, 20, 20);
+        xmark(bjct[i].posX*width, bjct[i].posY*height, 5);
       }
     }
   }
@@ -46,5 +46,11 @@ class Gui {
       line(i*10+10, 0, i*10+10, bduino.led[i].ntnst*(height/2));
     }
   }
+  
+  private void xmark(float x, float y, int sz){
+    line(x-sz,y+sz,x+sz,y-sz);
+    line(x-sz,y-sz,x+sz,y+sz);
+  }
+    
 }
 

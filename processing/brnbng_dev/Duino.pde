@@ -23,7 +23,7 @@ class Duino {
     for (int i = 0; i < led.length; i++) {
       led[i].display();
     }
-
+    //println(led[0].on+"    "+led[0].off);
     int[] serda = new int [9];
     //254 and 255 to choose player
     serda[0] = 254;    
