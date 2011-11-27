@@ -62,7 +62,7 @@ class Persona {
       if (bjct[i].tgl) {     
         //send to pd   
         relational(bjct[i].posX, bjct[i].posY, 0);
-        patch.send(xx, yy, i, joy);
+        patch.send(joy, i, xx, yy);
 
         //do the eyes     
         for (int eye = 1; eye < 3; eye++) {          

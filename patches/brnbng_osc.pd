@@ -1,4 +1,4 @@
-#N canvas 528 141 180 277 10;
+#N canvas 720 401 180 277 10;
 #X declare -lib mrpeach;
 #X obj 5 5 import mrpeach;
 #X obj 5 46 unpackOSC;
@@ -12,11 +12,13 @@
 #X msg 20 206 symbol plr\$1_obj\$2X;
 #X obj 32 254 s;
 #X msg 47 230 symbol plr\$1_obj\$2Y;
-#X text 97 132 x y o p;
+#X text 26 146 x y o p;
+#X obj 97 133 s raw;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 5 0;
 #X connect 4 0 8 0;
+#X connect 4 0 13 0;
 #X connect 5 0 4 0;
 #X connect 7 0 9 0;
 #X connect 7 0 11 0;

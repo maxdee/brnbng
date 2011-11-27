@@ -25,7 +25,7 @@ PD patch;
 //--------CLASSES--------\\
 Gui ui;
 Persona[] prsn = new Persona[2];
-Objects[] bjct = new Objects[5];
+Objects[] bjct = new Objects[10];
 
 //--------VARIABLES--------\\
 //Object count
@@ -55,8 +55,7 @@ public void draw() {
 
 //Place objects!
 public void mousePressed() {  
-  bjct[oCnt].place(float(mouseX)/width, float(mouseY)/height, true);
-  patch.send(-1, oCnt, oCnt, -1);
+  bjct[oCnt].place(PApplet.parseFloat(mouseX)/width, PApplet.parseFloat(mouseY)/height, true);
   oCnt++;
   oCnt = oCnt%bjct.length;
 }
