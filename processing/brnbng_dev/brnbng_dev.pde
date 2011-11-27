@@ -75,7 +75,7 @@ public void setupJoypads() {
     stickL[i].setTolerance(0.09f);
     stickR[i].setTolerance(0.09f);
     //set the moving speed
-    stickL[i].setMultiplier(0.004f);
+    stickL[i].setMultiplier(0.002f);
     //sets the heading incrementer
     stickR[i].setMultiplier(0.01f);
   }
