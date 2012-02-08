@@ -29,6 +29,7 @@ class Gui {
     prsn[p].posX*width+ (cos(radians(prsn[p].heading*360)))*lnlength, 
     prsn[p].posY*width+ (sin(radians(prsn[p].heading*360)))*lnlength);
   }
+  
   //display objects
   private void obj() {
     for (int i = 0; i < bjct.length; i++) {
@@ -39,6 +40,7 @@ class Gui {
       }
     }
   }
+  
   //display led data?
   private void led() {
     for (int i = 0; i < bduino.led.length; i++) {

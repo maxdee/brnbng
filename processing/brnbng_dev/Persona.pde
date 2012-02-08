@@ -57,18 +57,14 @@ class Persona {
 
   //-----------SIGHT!!-----------
   private void sense() {
+    patch.persona(joy, heading, posX, posY);
     //the big vision loop  still very messy -- getting better
-    for (int i = 0; i < bjct.length; i++) {
-      if (bjct[i].tgl) {     
-        //send to pd   
-        relational(bjct[i].posX, bjct[i].posY, 0);
-        patch.send(xx, yy, i, joy);
-
+    for (int i = 0; i < bjct.length; i++) {         
+      if (bjct[i].tgl) {        
         //do the eyes     
         for (int eye = 1; eye < 3; eye++) {          
           relational(bjct[i].posX, bjct[i].posY, eye);
           hyp = sqrt(sq(xx)+sq(yy));
-          
           if (yy > view && hyp < visi) {
             ntnst = ocular();
             //update led data - seen object# @ coordinates
@@ -91,9 +87,8 @@ class Persona {
   //Functionsfor the sight loop
   private float ocular() {
     //with focal //y is my z and theres no y.           
-   // xx = (xx*zoom)/(yy+0.1);   
-    hyp = (inver(hyp, 1)-visi)/((abs(xx)/yy)+0.2);   
-    println((abs(xx)/yy));    
+    //xx = (xx*zoom)/(yy+0.1);   
+    hyp = (inver(hyp, 1)-visi)/((abs(xx)/yy)+0.2);      
     return hyp;
   }
 
@@ -134,7 +129,6 @@ class Persona {
     //difference
     float obX = x-pX;
     float obY = y-pY;
-
     //relational position of objects!!
     xx = (obX*cos(-(headrad-HALF_PI)))-(obY*sin(-(headrad-HALF_PI))); 
     yy = (obX*sin(-(headrad-HALF_PI)))+(obY*cos(-(headrad-HALF_PI)));
@@ -154,8 +148,8 @@ class Persona {
       // posX += cos(radians((heading*360)+90))*stickL[joy].getY()/2;
       // posY += sin(radians((heading*360)+90))*stickL[joy].getY()/2;
       //induce wobble - implement increase with movement.
-//      heading += sin(wob)*wobble;
-//      wob+=0.1;
+      //      heading += sin(wob)*wobble;
+      //      wob+=0.1;
     }
     //wrap around, single player exploration mode?
     posX = posX%1;
@@ -166,6 +160,8 @@ class Persona {
     if (posY < 0) {
       posY = 1;
     }
+    
   }
+  
 }
 

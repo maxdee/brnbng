@@ -44,21 +44,22 @@ public void setup() {
 
 public void draw() {
   ui.refresh();
-//  for (int i = 0; i < prsn.length; i++) {
-//    prsn[i].update();
-//  }
+  for (int i = 0; i < prsn.length; i++) {
+    prsn[i].update();
+    bduino.send(i);
+  }
   //one at a time
-  prsn[0].update();
-  bduino.send();
+  //prsn[0].update();
+  
   
 }
 
 //Place objects!
 public void mousePressed() {  
-  bjct[oCnt].place(float(mouseX)/width, float(mouseY)/height, true);
-  patch.send(-1, oCnt, oCnt, -1);
+  if(oCnt < bjct.length){
+  bjct[oCnt].place(float(mouseX)/width, float(mouseY)/height, true, oCnt);
   oCnt++;
-  oCnt = oCnt%bjct.length;
+  }
 }
 
 

@@ -51,6 +51,7 @@ class Persona {
   public void update() {
     mover();
     sense();
+    patch.send(posX, posY, 0, joy);
   }
 
 
@@ -59,11 +60,7 @@ class Persona {
   private void sense() {
     //the big vision loop  still very messy -- getting better
     for (int i = 0; i < bjct.length; i++) {
-      if (bjct[i].tgl) {     
-        //send to pd   
-        relational(bjct[i].posX, bjct[i].posY, 0);
-        patch.send(joy, i, xx, yy);
-
+      if (bjct[i].tgl) {        
         //do the eyes     
         for (int eye = 1; eye < 3; eye++) {          
           relational(bjct[i].posX, bjct[i].posY, eye);

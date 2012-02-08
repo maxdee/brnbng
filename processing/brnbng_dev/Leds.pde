@@ -39,12 +39,12 @@ class Led {
     freq = average/weight;
     ntnst = weight/noo;
     if(ntnst > 0){
-    on = int(ntnst*(freq*16514f));
+    on = int(ntnst*(freq*(16514-1)));
     off = int(((ntnst*-1)+1)*(freq*16514));
     }
     else{
-      on = 0;
-      off = 10;
+      on = 1;
+      off = 60;
     }
    // println(freq+"    "+ntnst);
     average = 0;

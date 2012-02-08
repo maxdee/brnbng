@@ -4,7 +4,7 @@ class PD {
   public PD(NetAddress ip) {
     pdip = ip;
   }
-  public void send(int p, int o, float x, float y) {
+  public void send(float x, float y, int o, int p) {
     OscMessage myMessage = new OscMessage("/object"); 
     myMessage.add(x+" "+y+" "+o+" "+p); 
     osc.send(myMessage, pdip);

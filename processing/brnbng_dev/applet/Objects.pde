@@ -20,11 +20,12 @@ class Objects {
     tgl = false;
     float posX = 0;
     float posY = 0;
+    
   }
   //place object in space
   public void place(float x, float y, boolean t) {
     tgl = t;
     posX = x;
-    posY = y;
+    posY = y;   
   }
 }
